@@ -11,15 +11,6 @@ class OCR_Pred:
 
     def img_to_char(self,img):
         result = self.model.readtext(img)
-        print(result)
         ans = ""
-        '''
-        for page in result["pages"]:
-            for block in page["blocks"]:
-                for line in block['lines']:
-                    for word in line['words']:
-                        ans += word['value']
-        '''
-            
         return ans
         

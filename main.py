@@ -8,6 +8,7 @@ import time
 import pymongo
 
 
+
 def load_model(model_name):
     #Model loading
     trained_model = YOLO(model_name)
@@ -15,14 +16,13 @@ def load_model(model_name):
 
 def run():
     myclient = pymongo.MongoClient("mongodb+srv://root:root@majorapp.tnk70j0.mongodb.net/?retryWrites=true&w=majority")
-
     mydb = myclient['mernapp']
     mycol = mydb['number_plate']
     #Load the model
     ap = argparse.ArgumentParser()
     ocr = OCR_Pred()
     ap.add_argument("-m","--model",help="Provied Trained Model Name")
-    ap.add_argument('-i','--image',help="Image Source")
+    ap.add_argument('-l','--location',help="set location")
     argv = vars(ap.parse_args())
     trainedModel = load_model(argv["model"])
     cap = cv2.VideoCapture(0)
@@ -47,10 +47,9 @@ def run():
                 
             
         for k,v in final_result.items():
-            _=mycol.insert_one({'number_plate':v,'time':k})
+            _=mycol.insert_one({'number_plate':v,'time':k,'location': argv["location"]})
     
     cap.release()
-        #cv2.destroyAllWindows()
 
 
 if __name__== "__main__":
