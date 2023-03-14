@@ -4,7 +4,7 @@ import cv2
 import argparse
 from ocr import OCR_Pred
 import time
-
+import pytesseract
 import pymongo
 
 
@@ -39,9 +39,10 @@ def run():
             #cv2.imshow("Cropped img",cropped_img)
             #cv2.waitKey(200)
             
-                number_plate = ocr.model.readtext(cropped_img,detail=0)
+                number_plate = pytesseract.image_to_string(cropped_img, lang ='eng',config ='-c tessedit_char_whitelist=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 --oem 3 --psm 6 ')
                 print(number_plate)
                 final_number = "".join(number_plate)
+                print(final_number)
                 if len(final_number)>=8:
                     final_result[time.ctime(time.time())] = final_number
                 
